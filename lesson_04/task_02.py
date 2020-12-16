@@ -1,3 +1,5 @@
+import cProfile
+
 #  вариант 1 эратосфен:
 
 inp_num = int(input(f'Введите номер i-го по счёту простого числа, для нахождения.\n'))
@@ -37,3 +39,10 @@ def sieve_01(num):
 
 inp_num = int(input(f'Введите номер i-го по счёту простого числа, для нахождения.\n'))
 print(f'i-е по счёту простое число: {sieve_01(inp_num)}')
+
+cProfile.run('sieve_01(100_000)')
+# ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+#  1    0.000    0.000   10.614   10.614 <string>:1(<module>)
+#  1   10.614   10.614   10.614   10.614 task_02.py:25(sieve_01)
+#  1    0.000    0.000   10.614   10.614 {built-in method builtins.exec}
+#  1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
