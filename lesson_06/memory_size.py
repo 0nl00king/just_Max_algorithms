@@ -75,7 +75,9 @@ def double_for_count(empty_list, range_start, range_end, bound_start, bound_end)
     return empty_list
 
 
-# result = double_for_count(empty_list, FROM_NUM, TO_NUM, START_DIGIT, END_DIGIT)
+result = double_for_count(empty_list, FROM_NUM, TO_NUM, START_DIGIT, END_DIGIT)
+
+
 # for idx, num in enumerate(result, start=START_DIGIT):
 #     print(f'{num} чисел кратно {idx}')
 
@@ -89,7 +91,7 @@ def dict_count(range_end, bound_start, bound_end):
     return result_dict
 
 
-# print(dict_count(TO_NUM, START_DIGIT, END_DIGIT))
+result_2 = dict_count(TO_NUM, START_DIGIT, END_DIGIT)
 
 
 #  вариант 3 с генератором:
@@ -102,8 +104,8 @@ def gen_count(range_start, range_end, bound_start, bound_end):
     yield f'{result} чисел кратно {i}'
 
 
-# p = gen_count(FROM_NUM, TO_NUM, START_DIGIT, END_DIGIT)
-# for elm in p:
+result_3 = gen_count(FROM_NUM, TO_NUM, START_DIGIT, END_DIGIT)
+# for elm in result_3:
 #     print(elm)
 
 
@@ -114,12 +116,20 @@ memory_sum.append(START_DIGIT)
 memory_sum.append(END_DIGIT)
 memory_sum.append(empty_list)
 
+print(f'Задействовано памяти: {deq_container(memory_sum)}')
 
+memory_sum.append(result)
+print(f'Задействовано памяти: {deq_container(memory_sum)}')
+
+memory_sum.append(result_2)
+print(f'Задействовано памяти: {deq_container(memory_sum)}')
+
+memory_sum.append(result_3)
 print(f'Задействовано памяти: {deq_container(memory_sum)}')
 
 """
 не успел.....
 
-Интерпретатор Python 3.8, MacOS
+Интерпретатор Python 3.8, macOS 10.13.6 High Sierra x64
 
 """
