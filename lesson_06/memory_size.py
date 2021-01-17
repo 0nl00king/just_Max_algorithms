@@ -1,6 +1,4 @@
-from collections.abc import Mapping, Container
-from collections import deque
-import sys
+from sys import getsizeof
 
 """
 Подсчитать, сколько было выделено памяти под переменные в ранее разработанных программах
@@ -15,43 +13,26 @@ import sys
 """
 
 
-# def show_me_memory_size(obj, id_set):
-#     if id(obj) in id_set:
-#         return 0
-#
-#     result = getsizeof(obj)
-#     id_set.add(id(obj))
-#
-#     if isinstance(obj, str) or isinstance(0, unicode):
-#         return result
-#
-#     if isinstance(obj, Mapping):
-#         return result + sum(
-#             show_me_memory_size(key, id_set) + show_me_memory_size(value, id_set) for key, value in obj.items())
-#
-#     if isinstance(obj, Container):
-#         return result + sum(show_me_memory_size(item, id_set) for item in obj)
-#
-#     return result
+def show_me_memory_size(obj, id_set):
+    if id(obj) in id_set:
+        return 0
 
+    result = getsizeof(obj)
+    id_set.add(id(obj))
 
-def deq_container(memory_sum, deq_sum=0):
-    for x in memory_sum:
-        deq_sum += sys.getsizeof(x)
+    if isinstance(obj, (str, int, float, bool)):
+        return result
 
-        if type(x) == str or type(x) == int:
-            continue
+    if isinstance(obj, dict):
+        return result + sum(
+            show_me_memory_size(key, id_set) + show_me_memory_size(value, id_set)
+            for key, value in obj.items()
+        )
 
-        elif type(x) == list or type(x) == deque or type(x) == tuple:
-            for n in x:
-                deq_sum += sys.getsizeof(n)
+    if isinstance(obj, (list, tuple, set, frozenset)):
+        return result + sum(show_me_memory_size(item, id_set) for item in obj)
 
-        elif type(x) == dict:
-            for n in x:
-                deq_sum += sys.getsizeof(x)
-                deq_sum += sys.getsizeof(x[n])
-
-    return deq_sum
+    return result
 
 
 # Оценка алгоритмов.
@@ -109,26 +90,25 @@ result_3 = gen_count(FROM_NUM, TO_NUM, START_DIGIT, END_DIGIT)
 #     print(elm)
 
 
-memory_sum = deque()
-memory_sum.append(FROM_NUM)
-memory_sum.append(TO_NUM)
-memory_sum.append(START_DIGIT)
-memory_sum.append(END_DIGIT)
-memory_sum.append(empty_list)
+memory_sum = [FROM_NUM, TO_NUM, START_DIGIT, END_DIGIT, empty_list]
+memory_sum_with_result = show_me_memory_size(memory_sum, set()) + show_me_memory_size(result, set())
+memory_sum_with_result_2 = show_me_memory_size(memory_sum, set()) + show_me_memory_size(result_2, set())
+memory_sum_with_result_3 = show_me_memory_size(memory_sum, set()) + show_me_memory_size(result_3, set())
 
-print(f'Задействовано памяти: {deq_container(memory_sum)}')
-
-memory_sum.append(result)
-print(f'Задействовано памяти: {deq_container(memory_sum)}')
-
-memory_sum.append(result_2)
-print(f'Задействовано памяти: {deq_container(memory_sum)}')
-
-memory_sum.append(result_3)
-print(f'Задействовано памяти: {deq_container(memory_sum)}')
+print(f'Задействовано памяти для первого варианта: {memory_sum_with_result} bytes', end='\n\n')
+print(f'Задействовано памяти для второго варианта: {memory_sum_with_result_2} bytes', end='\n\n')
+print(f'Задействовано памяти для третьего варианта: {memory_sum_with_result_3} bytes')
 
 """
-не успел.....
+    Задействовано памяти для первого варианта: 868 bytes
+    при этом скорость выполнения вразы ниже чем в остальных двух выриантах
+    
+    Задействовано памяти для второго варианта: 1332 bytes
+    при этом скорость выполнения существенно выше чем в предыдущем вырианте
+    
+    Задействовано памяти для третьего варианта: 636 bytes
+    при этом скорость выполнения гараздо выше чем в остальных двух выриантах
+    наиболее оптимальная реализация из трех представленных
 
 Интерпретатор Python 3.8, macOS 10.13.6 High Sierra x64
 
