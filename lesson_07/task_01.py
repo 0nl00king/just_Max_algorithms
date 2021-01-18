@@ -42,4 +42,4 @@ SIZE = 10
 RANGE_START = -100
 array = [random.randrange(RANGE_START, abs(RANGE_START)) for _ in range(SIZE)]
 
-print(f'Unsorted array is:\n{array}\n\nSorted array in descending order is:\n{bubble_sort(array)}')
+print(f'Unsorted array is:\n\t{array}\n\nSorted array in descending order is:\n\t{bubble_sort(array)}')
